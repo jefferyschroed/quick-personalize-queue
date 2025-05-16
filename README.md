@@ -1,73 +1,66 @@
-# Welcome to your Lovable project
 
-## Project info
+# Website Personalization Queue
 
-**URL**: https://lovable.dev/projects/cb2dc7aa-2498-43c8-972d-8c3122011493
+This project provides a frontend interface for a backend developer work sample. It allows users to queue website personalization by submitting a URL and template ID to a backend API.
 
-## How can I edit this code?
+## Frontend Implementation
 
-There are several ways of editing your application.
+The frontend consists of:
 
-**Use Lovable**
+1. A form with fields for Website URL and Template ID
+2. A submit button to queue personalization
+3. Status feedback area showing success, error, or loading states
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/cb2dc7aa-2498-43c8-972d-8c3122011493) and start prompting.
+## API Integration
 
-Changes made via Lovable will be committed automatically to this repo.
+The frontend makes POST requests to `/api/queue-personalization` with the following format:
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```json
+{
+  "url": "https://www.example.com",
+  "templateId": "welcome_template"
+}
 ```
 
-**Edit a file directly in GitHub**
+### Expected API Responses
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+**Success Response (200 OK):**
+```json
+{
+  "message": "Personalization queued successfully for URL: https://www.example.com"
+}
+```
 
-**Use GitHub Codespaces**
+**Error Responses (400 Bad Request):**
+```json
+{
+  "error": "URL is required"
+}
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+or
 
-## What technologies are used for this project?
+```json
+{
+  "error": "Template ID cannot be empty"
+}
+```
 
-This project is built with:
+## Mock API for Development
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+During development, the application uses a mock API that:
+1. Validates that URL and Template ID are provided and non-empty
+2. Returns appropriate success or error responses
+3. Simulates network delay
 
-## How can I deploy this project?
+The mock API in `src/mocks/handlers.ts` implements the same validation logic that the backend developer will need to implement in their Express.js application.
 
-Simply open [Lovable](https://lovable.dev/projects/cb2dc7aa-2498-43c8-972d-8c3122011493) and click on Share -> Publish.
+## Backend Developer Task
 
-## Can I connect a custom domain to my Lovable project?
+Backend developers should implement an Express.js API endpoint that:
+1. Accepts POST requests at `/api/queue-personalization`
+2. Validates the input (URL and Template ID must be present and non-empty)
+3. Logs a message to simulate queueing the job
+4. Returns appropriate success or error responses
 
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+The frontend is already configured to work with this API once it's implemented.

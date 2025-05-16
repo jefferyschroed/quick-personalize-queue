@@ -22,11 +22,19 @@ const PersonalizationForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Basic validation
-    if (!url || !templateId) {
+    // Client-side validation to match backend validation
+    if (!url || url.trim() === "") {
       setStatus({
         type: "error",
-        message: "Error: Both Website URL and Template ID are required.",
+        message: "Error: URL is required.",
+      });
+      return;
+    }
+
+    if (!templateId || templateId.trim() === "") {
+      setStatus({
+        type: "error",
+        message: "Error: Template ID cannot be empty.",
       });
       return;
     }
@@ -53,7 +61,7 @@ const PersonalizationForm = () => {
         message: data.message || "Personalization queued successfully!",
       });
       
-      // Optionally clear fields on success
+      // Clear fields on success
       setUrl("");
       setTemplateId("");
       
